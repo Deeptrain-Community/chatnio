@@ -71,6 +71,8 @@ export const ChannelTypes: Record<string, string> = {
   deepseek: "深度求索 DeepSeek",
   coze: "扣子 Coze",
   dify: "Dify",
+  astraflow: "Astraflow (Global)",
+  "astraflow-cn": "Astraflow (中国)",
 };
 
 export const ShortChannelTypes: Record<string, string> = {
@@ -93,6 +95,8 @@ export const ShortChannelTypes: Record<string, string> = {
   deepseek: "DeepSeek",
   coze: "Coze",
   dify: "Dify",
+  astraflow: "Astraflow",
+  "astraflow-cn": "Astraflow CN",
 };
 
 export const ChannelInfos: Record<string, ChannelInfo> = {
@@ -304,6 +308,22 @@ export const ChannelInfos: Record<string, ChannelInfo> = {
       "> 例如 [https://www.coze.cn/space/341****/bot/73428668*****](https://www.coze.cn/space/341****/bot/73428668*****)，智能体 ID 为 73428668***** \n" +
       "> 确保当前使用的访问密钥已被授予智能体所属空间的 chat 权限 \n" +
       "> 如果需要让系统自动适配扣子 Coze 平台的图标，请在 **模型映射** 中将 **bot_id** 映射为 **coze** 开头的模型，如 coze-chat>73428668***** \n",
+  },
+  astraflow: {
+    endpoint: "https://api-us-ca.umodelverse.ai/v1",
+    format: "<api-key>",
+    models: [],
+    description:
+      "> Astraflow by UCloud — OpenAI-compatible platform supporting 200+ models (global endpoint)\n" +
+      "> Sign up at [https://astraflow.ucloud-global.com](https://astraflow.ucloud-global.com) to get your API key.\n",
+  },
+  "astraflow-cn": {
+    endpoint: "https://api.modelverse.cn/v1",
+    format: "<api-key>",
+    models: [],
+    description:
+      "> Astraflow by UCloud — OpenAI-compatible platform supporting 200+ models (China endpoint)\n" +
+      "> Sign up at [https://astraflow.ucloud.cn](https://astraflow.ucloud.cn) to get your API key.\n",
   },
   dify: {
     endpoint: "https://api.dify.ai/v1",

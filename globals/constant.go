@@ -28,6 +28,8 @@ const (
 	DeepseekChannelType    = "deepseek"
 	DifyChannelType        = "dify"
 	CozeChannelType        = "coze"
+	AstraflowChannelType   = "astraflow"
+	AstraflowCNChannelType = "astraflow-cn"
 )
 
 const (
