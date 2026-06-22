@@ -66,6 +66,7 @@ export const ChannelTypes: Record<string, string> = {
   baichuan: "百川大模型 BaichuanAI",
   skylark: "云雀大模型 SkylarkLLM",
   groq: "Groq Cloud",
+  atlascloud: "Atlas Cloud",
   bing: "New Bing",
   slack: "Slack Claude",
   deepseek: "深度求索 DeepSeek",
@@ -88,6 +89,7 @@ export const ShortChannelTypes: Record<string, string> = {
   baichuan: "百川 AI",
   skylark: "火山方舟",
   groq: "Groq",
+  atlascloud: "Atlas Cloud",
   bing: "Bing",
   slack: "Slack",
   deepseek: "DeepSeek",
@@ -288,6 +290,19 @@ export const ChannelInfos: Record<string, ChannelInfo> = {
     endpoint: "https://api.groq.com/openai",
     format: "<api-key>",
     models: ["llama2-70b-4096", "mixtral-8x7b-32768", "gemma-7b-it"],
+  },
+  atlascloud: {
+    endpoint: "https://api.atlascloud.ai",
+    format: "<api-key>",
+    models: [
+      "deepseek-v3",
+      "deepseek-r1",
+      "llama-3.3-70b-instruct",
+      "qwen2.5-72b-instruct",
+    ],
+    description:
+      "> Atlas Cloud is an OpenAI-compatible upstream provider. Fill in your Atlas Cloud **API key** (get one at https://www.atlascloud.ai), and keep the endpoint as *https://api.atlascloud.ai* (the system appends `/v1/chat/completions` automatically). \n" +
+      "> Set the model name to any model id available on your Atlas Cloud account. \n",
   },
   deepseek: {
     endpoint: "https://api.deepseek.com",
