@@ -42,8 +42,9 @@ var channelFactories = map[string]adaptercommon.FactoryCreator{
 	globals.DifyChannelType:        dify.NewChatInstanceFromConfig,
 	globals.CozeChannelType:        coze.NewChatInstanceFromConfig,
 
-	globals.MoonshotChannelType: openai.NewChatInstanceFromConfig, // openai format
-	globals.GroqChannelType:     openai.NewChatInstanceFromConfig, // openai format
+	globals.MoonshotChannelType:   openai.NewChatInstanceFromConfig, // openai format
+	globals.GroqChannelType:       openai.NewChatInstanceFromConfig, // openai format
+	globals.AtlasCloudChannelType: openai.NewChatInstanceFromConfig, // openai format
 }
 
 func createChatRequest(conf globals.ChannelConfig, props *adaptercommon.ChatProps, hook globals.Hook) error {
