@@ -10,6 +10,13 @@ import (
 	"github.com/spf13/viper"
 )
 
+func validateSecret(secret string) error {
+	if len(secret) < 32 {
+		return fmt.Errorf("[service] invalid secret length: got %d, expected at least 32 bytes; please set a stronger `secret` in config or environment", len(secret))
+	}
+	return nil
+}
+
 func ReadConf() {
 	viper.SetConfigFile(configFile)
 
@@ -27,10 +34,8 @@ func ReadConf() {
 	viper.AutomaticEnv()
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 
-	secret := viper.GetString("secret")
-	if len(secret) < 32 {
-		globals.Warn(fmt.Sprintf("[service] invalid secret length: got %d, expected at least 32 bytes; starting in 10 seconds, please set a stronger `secret` in config or environment; future versions may panic on weak secrets", len(secret)))
-		time.Sleep(10 * time.Second)
+	if err := validateSecret(viper.GetString("secret")); err != nil {
+		panic(err)
 	}
 
 	if timeout := viper.GetInt("max_timeout"); timeout > 0 {
