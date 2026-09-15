@@ -25,12 +25,6 @@ type SharedForm struct {
 	Time     time.Time         `json:"time"`
 }
 
-type SharedHashForm struct {
-	Id             int64 `json:"id"`
-	ConversationId int64 `json:"conversation_id"`
-	Refs           []int `json:"refs"`
-}
-
 func GetRef(refs []int) (result string) {
 	for _, v := range refs {
 		result += strconv.Itoa(v) + ","
@@ -43,17 +37,37 @@ func ShareConversation(db *sql.DB, user *auth.User, id int64, refs []int) (strin
 		return "", nil
 	}
 
+	userId := user.GetID(db)
 	ref := GetRef(refs)
-	hash := utils.Md5EncryptForm(SharedHashForm{
-		Id:             user.GetID(db),
-		ConversationId: id,
-		Refs:           refs,
-	})
+
+	// Reuse the existing share link for this conversation, if the user
+	// already created one, so re-sharing just updates which messages are
+	// included rather than minting a new link every time.
+	var existingHash string
+	err := globals.QueryRowDb(db, `
+		SELECT hash FROM sharing WHERE user_id = ? AND conversation_id = ?
+	`, userId, id).Scan(&existingHash)
+
+	if err == nil {
+		if _, err := globals.ExecDb(db, `
+			UPDATE sharing SET refs = ? WHERE hash = ?
+		`, ref, existingHash); err != nil {
+			return "", err
+		}
+		return existingHash, nil
+	}
+
+	// The share hash must be an unguessable secret: it is the sole access
+	// control on GetSharedConversation, so it cannot be derived from data
+	// (user id, conversation id) an attacker could plausibly know or guess.
+	hash, err := utils.GenerateRandomHash()
+	if err != nil {
+		return "", err
+	}
 
 	if _, err := globals.ExecDb(db, `
 		INSERT INTO sharing (hash, user_id, conversation_id, refs) VALUES (?, ?, ?, ?)
-		ON DUPLICATE KEY UPDATE refs = ?
-	`, hash, user.GetID(db), id, ref, ref); err != nil {
+	`, hash, userId, id, ref); err != nil {
 		return "", err
 	}
 
