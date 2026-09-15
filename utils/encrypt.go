@@ -55,6 +55,19 @@ func Md5EncryptForm(form interface{}) string {
 	return hex.EncodeToString(hash[:])
 }
 
+// GenerateRandomHash returns a 32 hex char, cryptographically random token.
+// Unlike Md5EncryptForm, callers cannot recompute it from the data it is
+// associated with, which matters for anything (e.g. a share link) whose
+// security relies on the token being an unguessable secret rather than a
+// derived value.
+func GenerateRandomHash() (string, error) {
+	raw := make([]byte, 16)
+	if _, err := io.ReadFull(crand.Reader, raw); err != nil {
+		return "", err
+	}
+	return hex.EncodeToString(raw), nil
+}
+
 func AES256Encrypt(key string, data string) (string, error) {
 	text := []byte(data)
 	block, err := aes.NewCipher([]byte(key))
